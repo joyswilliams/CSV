@@ -1,0 +1,33 @@
+Question: Write a Python function search_student(target_roll) to search for a specific student's details in student.csv using their Roll Number. If found, display their details; otherwise, display "Record Not Found".
+
+Answer:
+
+import csv
+
+
+def search_student(target_roll):
+    found = False
+    try:
+        with open("student.csv", "r") as file:
+            reader = csv.reader(file)
+            header = next(reader)  # Skip the header row
+
+            for row in reader:
+                if row and int(row[0]) == target_roll:
+                    print("\nRecord Found!")
+                    print(f"Roll Number : {row[0]}")
+                    print(f"Name        : {row[1]}")
+                    print(f"Marks       : {row[2]}")
+                    found = True
+                    break
+
+        if not found:
+            print(f"\nRecord with Roll Number {target_roll} not found.")
+
+    except FileNotFoundError:
+        print("Error: 'student.csv' file does not exist.")
+
+
+# Main Execution
+search_roll = int(input("Enter Roll Number to search: "))
+search_student(search_roll)
