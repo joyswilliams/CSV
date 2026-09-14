@@ -1,0 +1,40 @@
+Question: Write a Python function delete_student(target_roll) that deletes a student record from student.csv based on their Roll Number.
+
+Answer:
+
+import csv
+
+
+def delete_student(target_roll):
+    remaining_rows = []
+    deleted = False
+
+    try:
+        # Step 1: Read records and exclude the matching row
+        with open("student.csv", "r") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row:
+                    if row[0] != "RollNo" and int(row[0]) == target_roll:
+                        deleted = True
+                        continue  # Skip this row so it isn't copied
+                    remaining_rows.append(row)
+
+        # Step 2: Write back remaining records
+        if deleted:
+            with open("student.csv", "w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows(remaining_rows)
+            print(
+                f"\nRecord with Roll Number {target_roll} deleted successfully!"
+            )
+        else:
+            print(f"\nRoll Number {target_roll} not found.")
+
+    except FileNotFoundError:
+        print("Error: 'student.csv' file does not exist.")
+
+
+# Main Execution
+del_roll = int(input("Enter Roll Number to delete: "))
+delete_student(del_roll)
