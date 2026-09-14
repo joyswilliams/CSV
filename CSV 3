@@ -1,0 +1,42 @@
+Question: Write a Python  program  to update the marks of a student with a given Roll Number in student.csv.
+
+Answer:
+
+import csv
+
+
+def update_marks(target_roll, new_marks):
+    rows = []
+    updated = False
+
+    try:
+        # Step 1: Read data into memory and update target record
+        with open("student.csv", "r") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row:
+                    # Row 0 is header; skip converting header to int
+                    if row[0] != "RollNo" and int(row[0]) == target_roll:
+                        row[2] = str(new_marks)
+                        updated = True
+                    rows.append(row)
+
+        # Step 2: Overwrite original file with modified content
+        if updated:
+            with open("student.csv", "w", newline="") as file:
+                writer = csv.writer(file)
+                writer.writerows(rows)
+            print(
+                f"\nMarks updated successfully for Roll Number {target_roll}!"
+            )
+        else:
+            print(f"\nRoll Number {target_roll} not found.")
+
+    except FileNotFoundError:
+        print("Error: 'student.csv' file does not exist.")
+
+
+# Main Execution
+r_no = int(input("Enter Roll Number to update marks: "))
+mks = float(input("Enter New Marks: "))
+update_marks(r_no, mks)
