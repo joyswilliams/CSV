@@ -1,0 +1,41 @@
+Question: Write a Python program to create a CSV file named student.csv with headings [RollNo, Name, Marks] and add records entered by the user. Write another function to read and display all records.
+
+Answer:
+
+import csv
+
+
+def create_csv():
+    with open("student.csv", "w", newline="") as file:
+        writer = csv.writer(file)
+        # Writing header row
+        writer.writerow(["RollNo", "Name", "Marks"])
+
+        n = int(input("How many records do you want to add? "))
+        for i in range(n):
+            print(f"\n--- Enter Record {i+1} ---")
+            roll = int(input("Enter Roll Number: "))
+            name = input("Enter Name: ")
+            marks = float(input("Enter Marks: "))
+            writer.writerow([roll, name, marks])
+
+    print("\nCSV file created successfully!")
+
+
+def read_csv():
+    print("\n--- Displaying Content of student.csv ---")
+    try:
+        with open("student.csv", "r") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if row:  # Check to skip empty lines
+                    print(
+                        f"Roll No: {row[0]:<8} | Name: {row[1]:<15} | Marks: {row[2]}"
+                    )
+    except FileNotFoundError:
+        print("Error: 'student.csv' file does not exist.")
+
+
+# Main Execution
+create_csv()
+read_csv()
